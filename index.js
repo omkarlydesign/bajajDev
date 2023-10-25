@@ -58,8 +58,48 @@ loader.load("Bike.glb", (gltf) => {
 
   //mesh scale the model
   mesh.scale.set(6.2, 6.2, 6.2);
-
   scene.add(mesh);
+  const section = gsap.utils.toArray(".section");
+  section.forEach((s) => {
+    let tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: s,
+        pin: true,
+        pinSpacing: false,
+        scrub: 1,
+        markers: true,
+      },
+    });
+    tl.to(s, {
+      x: "100%",
+      duration: 1,
+      ease: "power2.inOut",
+    }).to(
+      mesh.position,
+      {
+        x: -3.5,
+        duration: 2,
+        ease: "power1.inOut",
+      },
+      "-=2"
+    );
+  });
+
+  const bikeAnimation = gsap.timeline({
+    scrollTrigger: {
+      trigger: "#webgi-canvas-container",
+      start: "top center",
+      end: "bottom center",
+      scrub: true,
+      markers: true,
+      pin: true,
+    },
+  });
+
+  bikeAnimation.to(mesh.position, {
+    x: 10,
+    duration: 1,
+  });
 });
 
 window.addEventListener("resize", () => {
@@ -74,7 +114,7 @@ window.addEventListener("resize", () => {
   renderer.setSize(sizes.width, sizes.height);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-  renderer.render(scene, camera); // -> Also needed
+  renderer.render(scene, camera);
 });
 
 function animate() {
@@ -110,6 +150,3 @@ animate();
 //     "-=2"
 //   );
 // });
-
-const masterTimeline = gsap.timeline();
-masterTimeline.add(sections).add(bikeAnimation, 0);

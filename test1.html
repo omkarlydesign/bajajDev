@@ -179,10 +179,10 @@
 
       renderer.setClearColor(0xffffff, 1); // Set clear color to white with alpha 1
 
-      // const textureLoader = new THREE.TextureLoader();
-      // const bgImg = textureLoader.load("images/Race.jpg");
-      // renderer.setClearColor(0x000000, 1); // Set clear color to black with alpha 0
-      // scene.background = bgImg;
+      const textureLoader = new THREE.TextureLoader();
+      const bgImg = textureLoader.load("images/Race.jpg");
+      renderer.setClearColor(0x000000, 1); // Set clear color to black with alpha 0
+      scene.background = bgImg;
 
       //controls for model and camera movement
       const controls = new OrbitControls(camera, renderer.domElement);
@@ -197,13 +197,13 @@
       loader.load("Bike.glb", (gltf) => {
         mesh = gltf.scene;
         //set the position of the model
-        mesh.position.set(-3.1, -3.1, 0);
+        mesh.position.set(-8.1, -3.1, 0);
 
         //rotate the model horizontally
         mesh.rotation.y = Math.PI / 2;
 
         //mesh scale the model
-        mesh.scale.set(3.2, 3.2, 3.2);
+        mesh.scale.set(1.4, 1.4, 1.4);
         scene.add(mesh);
 
         gsap.to(".text1", {
@@ -213,8 +213,6 @@
         });
 
         const sections = document.querySelectorAll(".section");
-        const meshPositions = [-2.9, -2.3, -1.6, -1.1, -0.7, ];
-        const durations = [2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5];
         sections.forEach((e, index) => {
           let tl = gsap.timeline({
             scrollTrigger: {
@@ -226,18 +224,9 @@
               pin: true,
             },
           });
-          tl.to(
-            mesh.position,
-            {
-              x: meshPositions[index],
-              duration: durations[index],
-              ease: "power2.inOut",
-            },
-            "<"
-          );
           tl.from(e, {
             opacity: 0,
-            x: -150,
+            x: -350,
             duration: 2.1,
             stagger: 0.3,
             ease: "power3.inOut",
@@ -246,6 +235,13 @@
             stagger: 0.4,
             duration: 2,
             ease: "power3.inOut",
+          });
+
+          gsap.to(mesh.position, {
+            x: 9.1,
+            duration: 15.1,
+            ease: "power1.inOut",
+            delay: 4.3
           });
         });
       });

@@ -33,6 +33,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <style>
       /* Contents of style.css */
+      body::-webkit-scrollbar {
+        width: 0%;
+      }
+      body {
+        overflow-x: hidden;
+      }
       .webgl {
         width: 100%;
         height: 100vh;
@@ -52,10 +58,11 @@
         position: fixed;
       }
 
+      .spacer,
+      .section1,
       .section {
         position: relative;
         z-index: 1;
-        display: flex;
         width: 100%;
         height: 100vh;
         margin: 0;
@@ -65,25 +72,62 @@
         -webkit-user-select: none;
         -ms-user-select: none;
         user-select: none;
-        font-size: 15px;
+      }
+      .info1 {
+        position: absolute;
+        top: 2%;
+        left: 10%;
+      }
+      .info2 {
+        position: absolute;
+        top: 2%;
+        right: 40%;
+      }
+      .info3 {
+        position: absolute;
+        top: 2%;
+        left: 10%;
+      }
+      .info4 {
+        position: absolute;
+        top: 2%;
+        left: 10%;
+      }
+      .text1 {
+        opacity: 0;
+      }
+      .text1,
+      .text2,
+      .text3,
+      .text4 {
+        font-size: 18px;
         color: black;
-        overflow-x: hidden;
       }
     </style>
   </head>
   <body>
-    <section class="section info1">
-      <h1 class="text1">Bi-functional LED Projector headlamp</h1>
-    </section>
-    <section class="section info2">
-      <h1 class="text2">Dual Channel ABS Braking Technology</h1>
-    </section>
-    <section class="section info3">
-      <h1 class="text3">Dual Tone Aesthetics</h1>
-    </section>
-    <section class="section info4">
-      <h1 class="text4">All- New Refined Engine</h1>
-    </section>
+    <div class="section1">
+      <div class="info1">
+        <h1 class="text1">Text 1</h1>
+      </div>
+    </div>
+    <div class="section">
+      <div class="info2">
+        <h1 class="text1">Text 2</h1>
+      </div>
+    </div>
+    <div class="section">
+      <div class="info3">
+        <h1 class="text1">Text 3</h1>
+      </div>
+    </div>
+    <div class="section">
+      <div class="info4">
+        <h1 class="text1">Text 4</h1>
+      </div>
+    </div>
+    <div class="spacer"></div>
+
     <div id="webgi-canvas-container">
       <canvas class="webgl"></canvas>
     </div>
@@ -128,10 +172,12 @@
       renderer.setSize(sizes.width, sizes.height);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-      const textureLoader = new THREE.TextureLoader();
-      const bgImg = textureLoader.load("images/city.jpg");
-      renderer.setClearColor(0x000000, 1); // Set clear color to black with alpha 0
-      scene.background = bgImg;
+      renderer.setClearColor(0xffffff, 1); // Set clear color to white with alpha 1
+
+      // const textureLoader = new THREE.TextureLoader();
+      // const bgImg = textureLoader.load("images/city.jpg");
+      // renderer.setClearColor(0x000000, 1); // Set clear color to black with alpha 0
+      // scene.background = bgImg;
 
       //controls for model and camera movement
       const controls = new OrbitControls(camera, renderer.domElement);
@@ -146,47 +192,57 @@
       loader.load("Bike.glb", (gltf) => {
         mesh = gltf.scene;
         //set the position of the model
-        mesh.position.set(-6.5, -3.1, 0);
+        mesh.position.set(-3.1, -3.1, 0);
 
         //rotate the model horizontally
         mesh.rotation.y = Math.PI / 2;
 
         //mesh scale the model
-        mesh.scale.set(2.7, 2.7, 2.7);
+        mesh.scale.set(3.2, 3.2, 3.2);
         scene.add(mesh);
-        const sections = document.querySelectorAll(".section");
-        const textElements = document.querySelectorAll(".section h1");
-        const scrollPositions = [-3.8, -0.7, 3.1, 6.1, 8.4]; // Desired X positions for the bike
 
-        sections.forEach((section, index) => {
+        gsap.to(".text1", {
+          opacity: 1,
+          x: 40,
+          duration: 1.9,
+        });
+
+        const sections = document.querySelectorAll(".section");
+        const meshPositions = [-2.9, -2.1, -0.1, 1.9];
+        const durations = [2.5, 2.5, 2.5, 2.5];
+        sections.forEach((e, index) => {
           let tl = gsap.timeline({
             scrollTrigger: {
-              trigger: section,
-              pin: true,
+              trigger: e,
               pinSpacing: false,
+              start: "top 30%",
+              end: "bottom 70%",
               scrub: true,
+              markers: true,
+              pin: true,
             },
           });
-          tl.to(section, {
-            y: -20,
-            autoAlpha: 1,
-          }).to(
-            section,
-            {
-              autoAlpha: 0,
-            },
-            0.5
-          );
-          // Shift bike model to the right
           tl.to(
             mesh.position,
             {
-              x: scrollPositions[index],
-              duration: 5,
+              x: meshPositions[index],
+              duration: durations[index],
               ease: "power2.inOut",
             },
             "<"
           );
+          tl.from(e, {
+            opacity: 0,
+            x: -150,
+            duration: 2.1,
+            stagger: 0.3,
+            ease: "power3.inOut",
+          }).to(e, {
+            opacity: 0,
+            stagger: 0.4,
+            duration: 2,
+            ease: "power3.inOut",
+          });
         });
       });
 

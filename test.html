@@ -2,13 +2,46 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Three.js Resizing browser</title>
     <style>
-      body {
+      * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+        font-family: -applesystem, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+      }
+      html,
+      body {
+        height: 100vh;
+        width: 100vw;
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@v0.153.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@v0.153.0/examples/jsm/"
+        }
+      }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+      /* Contents of style.css */
+      html {
+        scroll-behavior: smooth;
+      }
+      body::-webkit-scrollbar {
+        width: 0%;
+      }
+      body {
+        overflow-x: hidden;
+      }
+      .main-container {
+        position: relative;
       }
       .webgl {
         width: 100%;
@@ -27,75 +60,153 @@
         padding: 0;
         position: fixed;
       }
-      .spacer,
-      .section {
+      .spacer-container {
+        background-color: #dedede;
+        position: relative;
+        z-index: 1;
         width: 100%;
         height: 100vh;
-        position: relative;
+        align-content: center;
+        justify-content: center;
+        margin: 0;
+        padding: 0;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        overflow: hidden;
       }
-      .section h1 {
+      .section1,
+      .section2,
+      .section3,
+      .section4,
+      .section5,
+      .section6,
+      .section7,
+      .section8 .section {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+        scroll-snap-align: start;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+      .info1,
+      .info {
         position: absolute;
-        top: 2%;
-        left: 2%;
+        display: flex;
+        flex-direction: column;
+        padding: 20px 20px;
+      }
+      .text1 {
+        /* opacity: 0; */
+      }
+      .text1,
+      .text2,
+      .text3,
+      .text4 {
+        font-size: 18px;
+        color: rgb(226, 222, 222);
       }
     </style>
-    <script type="importmap">
-      {
-        "imports": {
-          "three": "https://unpkg.com/three@v0.153.0/build/three.module.js",
-          "three/addons/": "https://unpkg.com/three@v0.153.0/examples/jsm/"
-        }
-      }
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   </head>
   <body>
-    <div class="section1 bg1">
-      <h1 class="text1">Animation 1</h1>
-    </div>
-    <div class="section bg2">
-      <h1 class="text2">Animation 2</h1>
-    </div>
-    <div class="section bg3">
-      <h1 class="text3">Animation 3</h1>
-    </div>
-    <div class="section bg4">
-      <h1 class="text4">Animation 4</h1>
-    </div>
-    <div id="webgi-canvas-container">
-      <canvas class="webgl"></canvas>
-    </div>
-    <div class="spacer"></div>
+    <section class="main-container">
+      <div class="section1">
+        <div class="info1">
+          <h1 class="text1">Bi-Functional LED Projector headlamp</h1>
+          <p>
+            Flanked by signature naked wolf LED DRLs – offering unmatched
+            illumination and
+          </p>
+        </div>
+      </div>
+      <div class="section2 section">
+        <div class="info2 info">
+          <h1 class="text1">Dual Channel ABS Braking Technology</h1>
+          <p>
+            Take charge of emergency braking with full confidence. Our
+            twinchannel ABS feature comes into action ensuring wheels do not
+            lock or subsequently skid on any surface
+          </p>
+        </div>
+      </div>
+      <div class="section3 section">
+        <div class="info3 info">
+          <h1 class="text1">Dual Tone Aesthetics</h1>
+          <p>
+            Dynamic interplay of premium metallised dual colours. Darker in the
+            front and lighter towards the rear, it emphasises the contours of
+            the beas
+          </p>
+        </div>
+      </div>
+      <div class="section4 section">
+        <div class="info4 info">
+          <h1 class="text1">All- New Refined Engine</h1>
+          <p>
+            Own the streets with intoxicating acceleration and everyday
+            rideability of the new refined engine.16 PS (11.7 kW) Power, 14.65
+            Nm Torque, Twin Spark, Oil-cooled DTS-i engine
+          </p>
+        </div>
+      </div>
+      <div class="section5 section">
+        <div class="info5 info">
+          <h1 class="text1">Sporty Under Belly Exhaust</h1>
+          <p>
+            The sporty and precision-crafted exhaust system has been positioned
+            close to the bike’s overall center of gravity, improving balance and
+            handling, whilst also delivering smooth, instant and beast-like
+            power. Oh, and it looks agile as hell too
+          </p>
+        </div>
+      </div>
+      <div class="section6 section">
+        <div class="info6 info">
+          <h1 class="text1">Riding Ergonomics</h1>
+          <p>
+            Seat height is set at 795 mm to keep you always in control.
+            Moreover, the bike is sleek at rider thigh area to improve the
+            ground reachability
+          </p>
+        </div>
+      </div>
+      <div class="section7 section">
+        <div class="info7 info">
+          <h1 class="text1">New Monoshock Suspension</h1>
+          <p>New advanced suspension offers pinpoint handling and balance.</p>
+        </div>
+      </div>
+      <div class="section8 section">
+        <div class="info8 info">
+          <h1 class="text1">Best In Class Braking Technology</h1>
+          <p>
+            Greater power needs greater control, isn’t it? Unleash the power of
+            precision braking with 300 mm front disc and 230 mm rear disc brake.
+            (*Only for Dual channel ABS variant.)
+          </p>
+        </div>
+      </div>
+      <div id="webgi-canvas-container">
+        <canvas class="webgl"></canvas>
+      </div>
+    </section>
 
-    <script>
-      gsap.from(".text1", {
-        opacity: 0,
-        x: -150,
-        duration: 1.9,
-      });
-      gsap.registerPlugin(ScrollTrigger);
+    <section class="spacer-container">
+      <h1>this is video</h1>
+      <h1>this is video</h1>
+      <h1>this is video</h1>
+      <h1>this is video</h1>
+      <h1>this is video</h1>
+    </section>
 
-      const sections = document.querySelectorAll(".section");
-      console.log(sections);
-
-      sections.forEach((e) => {
-        gsap.from(e, {
-          opacity: 0,
-          x: -150,
-          duration: 1,
-          scrollTrigger: {
-            trigger: e,
-            pinSpacing: false,
-            scrub: 1,
-            markers: true,
-            pin: true,
-          },
-        });
-      });
-    </script>
-
-    <!-- <script type="module">
+    <script type="module">
       import * as THREE from "three";
       import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
       import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -136,6 +247,8 @@
       renderer.setSize(sizes.width, sizes.height);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
+      renderer.setClearColor(0x808080, 1); // Set clear color to white with alpha 1
+
       //controls for model and camera movement
       const controls = new OrbitControls(camera, renderer.domElement);
       controls.enableRotate = false;
@@ -149,14 +262,75 @@
       loader.load("Bike.glb", (gltf) => {
         mesh = gltf.scene;
         //set the position of the model
-        mesh.position.set(-3.5, -3.1, 0);
+        mesh.position.set(-3.1, -3.1, 1.6);
 
         //rotate the model horizontally
-        mesh.rotation.y = Math.PI / 2;
+        mesh.rotation.y = Math.PI / 2.1;
 
         //mesh scale the model
-        mesh.scale.set(2.7, 2.7, 2.7);
+        mesh.scale.set(4.9, 4.9, 4.9);
         scene.add(mesh);
+
+        const sections = document.querySelectorAll(".section");
+        const info = document.querySelectorAll(".info");
+        console.log(info);
+        const meshPositions = [-3.0, -2.9, 0.1, 1.1, 1.7, 2.3, 2.8];
+        const durations = [2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5];
+
+        gsap.from(".info1", {
+          opacity: 0,
+          x: -150,
+          duration: 1.6,
+          ease: "power2.inOut",
+        });
+
+        sections.forEach((e, index) => {
+          let tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: e,
+              pin: true,
+              scrub: 5,
+              pinSpacing: false,
+            },
+          });
+          tl.to(mesh.position, {
+            x: meshPositions[index],
+            duration: durations[index],
+            ease: "power2.in",
+          });
+          tl.from(e, {
+            opacity: 0,
+            x: -110,
+            duration: 2.5,
+            ease: "expo.out",
+          }).to(e, {
+            opacity: 0,
+            delay: 0.1,
+            duration: 0.5,
+            ease: "expo.inout",
+          });
+        });
+        // //section 2 and info2
+        // let tl = gsap.timeline({
+        //   scrollTrigger: {
+        //     trigger: ".section2",
+        //     pin: true,
+        //     scrub: 1,
+        //     pinSpacing: false,
+        //     markers: true,
+        //   },
+        // });
+        // tl.from(".info2", {
+        //   opacity: 0,
+        //   x: -150,
+        //   duration: 2.5,
+        //   ease: "expo.out",
+        // }).to(".info2", {
+        //   opacity: 0,
+        //   delay: 0.1,
+        //   duration: 0.5,
+        //   ease: "expo.inout",
+        // });
       });
 
       window.addEventListener("resize", () => {
@@ -174,6 +348,16 @@
         renderer.render(scene, camera);
       });
 
+      const spacerContainer = document.querySelector(".spacer-container");
+      const spacerOffset = spacerContainer.offsetTop;
+
+      window.addEventListener("scroll", () => {
+        const scrollPosition = window.scrollY + window.innerHeight;
+        if (scrollPosition >= spacerOffset) {
+          console.log("reached spacer container");
+        }
+      });
+
       function animate() {
         requestAnimationFrame(animate);
         controls.update();
@@ -181,32 +365,6 @@
       }
 
       animate();
-
-      // const section = gsap.utils.toArray(".section");
-      // section.forEach((s) => {
-      //   let tl = gsap.timeline({
-      //     scrollTrigger: {
-      //       trigger: s,
-      //       pin: true,
-      //       pinSpacing: false,
-      //       scrub: 1,
-      //       markers: true,
-      //     },
-      //   });
-      //   tl.to(s, {
-      //     x: "100%",
-      //     duration: 1,
-      //     ease: "power2.inOut",
-      //   }).to(
-      //     mesh.position,
-      //     {
-      //       x: -3.5,
-      //       duration: 2,
-      //       ease: "power1.inOut",
-      //     },
-      //     "-=2"
-      //   );
-      // });
-    </script> -->
+    </script>
   </body>
 </html>

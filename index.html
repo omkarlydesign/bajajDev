@@ -19,8 +19,6 @@
         width: 100vw;
       }
     </style>
-    <!-- <link rel="stylesheet" href="style.css" /> -->
-
     <script type="importmap">
       {
         "imports": {
@@ -49,7 +47,6 @@
         left: 0;
         touch-action: none;
       }
-
       #webgi-canvas-container {
         width: 100vw;
         height: 100vh;
@@ -57,10 +54,15 @@
         padding: 0;
         position: fixed;
       }
-
       .spacer,
       .section1,
-      .section {
+      .section2,
+      .section3,
+      .section4,
+      .section5,
+      .section6,
+      .section7,
+      .section8 .section {
         position: relative;
         z-index: 1;
         width: 100%;
@@ -73,28 +75,15 @@
         -ms-user-select: none;
         user-select: none;
       }
-      .info1 {
+      .info1,
+      .info {
         position: absolute;
-        top: 2%;
-        left: 10%;
-      }
-      .info2 {
-        position: absolute;
-        top: 2%;
-        right: 40%;
-      }
-      .info3 {
-        position: absolute;
-        top: 2%;
-        left: 10%;
-      }
-      .info4 {
-        position: absolute;
-        top: 2%;
-        left: 10%;
+        display: flex;
+        flex-direction: column;
+        padding: 20px 20px;
       }
       .text1 {
-        opacity: 0;
+        /* opacity: 0; */
       }
       .text1,
       .text2,
@@ -108,27 +97,78 @@
   <body>
     <div class="section1">
       <div class="info1">
-        <h1 class="text1">Text 1</h1>
+        <h1 class="text1">Bi-Functional LED Projector headlamp</h1>
+        <p>
+          Flanked by signature naked wolf LED DRLs – offering unmatched
+          illumination and
+        </p>
       </div>
     </div>
-    <div class="section">
-      <div class="info2">
-        <h1 class="text1">Text 2</h1>
+    <div class="section2 section">
+      <div class="info2 info">
+        <h1 class="text1">Dual Channel ABS Braking Technology</h1>
+        <p>
+          Take charge of emergency braking with full confidence. Our twinchannel
+          ABS feature comes into action ensuring wheels do not lock or
+          subsequently skid on any surface
+        </p>
       </div>
     </div>
-    <div class="section">
-      <div class="info3">
-        <h1 class="text1">Text 3</h1>
+    <div class="section3 section">
+      <div class="info3 info">
+        <h1 class="text1">Dual Tone Aesthetics</h1>
+        <p>
+          Dynamic interplay of premium metallised dual colours. Darker in the
+          front and lighter towards the rear, it emphasises the contours of the
+          beas
+        </p>
       </div>
     </div>
-    <div class="section">
-      <div class="info4">
-        <h1 class="text1">Text 4</h1>
+    <div class="section4 section">
+      <div class="info4 info">
+        <h1 class="text1">All- New Refined Engine</h1>
+        <p>
+          Own the streets with intoxicating acceleration and everyday
+          rideability of the new refined engine.16 PS (11.7 kW) Power, 14.65 Nm
+          Torque, Twin Spark, Oil-cooled DTS-i engine
+        </p>
       </div>
     </div>
-    <div class="section">
-      <div class="info5">
-        <h1 class="text1">Text 5</h1>
+    <div class="section5 section">
+      <div class="info5 info">
+        <h1 class="text1">Sporty Under Belly Exhaust</h1>
+        <p>
+          The sporty and precision-crafted exhaust system has been positioned
+          close to the bike’s overall center of gravity, improving balance and
+          handling, whilst also delivering smooth, instant and beast-like power.
+          Oh, and it looks agile as hell too
+        </p>
+      </div>
+    </div>
+    <div class="section6 section">
+      <div class="info6 info">
+        <h1 class="text1">Riding Ergonomics</h1>
+        <p>
+          Seat height is set at 795 mm to keep you always in control. Moreover,
+          the bike is sleek at rider thigh area to improve the ground
+          reachability
+        </p>
+      </div>
+    </div>
+    <div class="section7 section">
+      <div class="info7 info">
+        <h1 class="text1">New Monoshock Suspension</h1>
+        <p>New advanced suspension offers pinpoint handling and balance.</p>
+      </div>
+    </div>
+    <div class="section8 section">
+      <div class="info8 info">
+        <h1 class="text1">Best In Class Braking Technology</h1>
+        <p>
+          Greater power needs greater control, isn’t it? Unleash the power of
+          precision braking with 300 mm front disc and 230 mm rear disc brake.
+          (*Only for Dual channel ABS variant.)
+        </p>
       </div>
     </div>
     <div class="spacer"></div>
@@ -177,12 +217,7 @@
       renderer.setSize(sizes.width, sizes.height);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-      renderer.setClearColor(0xffffff, 1); // Set clear color to white with alpha 1
-
-      // const textureLoader = new THREE.TextureLoader();
-      // const bgImg = textureLoader.load("images/Race.jpg");
-      // renderer.setClearColor(0x000000, 1); // Set clear color to black with alpha 0
-      // scene.background = bgImg;
+      renderer.setClearColor(0x808080, 1); // Set clear color to white with alpha 1
 
       //controls for model and camera movement
       const controls = new OrbitControls(camera, renderer.domElement);
@@ -200,54 +235,75 @@
         mesh.position.set(-3.1, -3.1, 0);
 
         //rotate the model horizontally
-        mesh.rotation.y = Math.PI / 2;
+        mesh.rotation.y = Math.PI / 2.1;
 
         //mesh scale the model
-        mesh.scale.set(3.2, 3.2, 3.2);
+        mesh.scale.set(4.9, 4.9, 4.9);
         scene.add(mesh);
 
-        gsap.to(".text1", {
-          opacity: 1,
-          x: 40,
-          duration: 1.9,
+        const sections = document.querySelectorAll(".section");
+        const info = document.querySelectorAll(".info");
+        console.log(info);
+        const meshPositions = [-3.0, -2.9, 0.1, 1.1, 1.7, 2.3, 2.8];
+        const durations = [2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5];
+
+        gsap.from(".info1", {
+          opacity: 0,
+          x: -150,
+          duration: 1.6,
+          ease: "power2.inOut",
         });
 
-        const sections = document.querySelectorAll(".section");
-        const meshPositions = [-2.9, -2.3, -1.6, -1.1, -0.7, ];
-        const durations = [2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5];
         sections.forEach((e, index) => {
           let tl = gsap.timeline({
             scrollTrigger: {
               trigger: e,
-              pinSpacing: false,
-              start: "top 15%",
-              scrub: true,
-              markers: true,
               pin: true,
+              scrub: 1,
+              start: "top 6%",
+              end: "bottom 16%",
+              pinSpacing: false,
+              markers: true,
             },
           });
-          tl.to(
-            mesh.position,
-            {
-              x: meshPositions[index],
-              duration: durations[index],
-              ease: "power2.inOut",
-            },
-            "<"
-          );
+          tl.to(mesh.position, {
+            x: meshPositions[index],
+            duration: durations[index],
+            ease: "power2.inOut",
+          });
           tl.from(e, {
             opacity: 0,
-            x: -150,
-            duration: 2.1,
-            stagger: 0.3,
-            ease: "power3.inOut",
+            x: -110,
+            duration: 2.5,
+            ease: "expo.out",
           }).to(e, {
             opacity: 0,
-            stagger: 0.4,
-            duration: 2,
-            ease: "power3.inOut",
+            delay: 0.1,
+            duration: 0.5,
+            ease: "expo.inout",
           });
         });
+        // //section 2 and info2
+        // let tl = gsap.timeline({
+        //   scrollTrigger: {
+        //     trigger: ".section2",
+        //     pin: true,
+        //     scrub: 1,
+        //     pinSpacing: false,
+        //     markers: true,
+        //   },
+        // });
+        // tl.from(".info2", {
+        //   opacity: 0,
+        //   x: -150,
+        //   duration: 2.5,
+        //   ease: "expo.out",
+        // }).to(".info2", {
+        //   opacity: 0,
+        //   delay: 0.1,
+        //   duration: 0.5,
+        //   ease: "expo.inout",
+        // });
       });
 
       window.addEventListener("resize", () => {
@@ -272,57 +328,6 @@
       }
 
       animate();
-
-      // const section = gsap.utils.toArray(".section");
-      // section.forEach((s) => {
-      //   let tl = gsap.timeline({
-      //     scrollTrigger: {
-      //       trigger: s,
-      //       pin: true,
-      //       pinSpacing: false,
-      //       scrub: 1,
-      //       markers: true,
-      //     },
-      //   });
-      //   tl.to(s, {
-      //     x: "100%",
-      //     duration: 1,
-      //     ease: "power2.inOut",
-      //   }).to(
-      //     mesh.position,
-      //     {
-      //       x: -3.5,
-      //       duration: 2,
-      //       ease: "power1.inOut",
-      //     },
-      //     "-=2"
-      //   );
-      // });
     </script>
-    <!-- <script>
-      gsap.registerPlugin(ScrollTrigger);
-      const containers = gsap.utils.toArray(".section");
-      containers.forEach((c) => {
-        let tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: c,
-            pin: true,
-            pinSpacing: false,
-            scrub: true,
-            markers: true,
-          },
-        });
-        tl.to(c, {
-          y: -20,
-          autoAlpha: 1,
-        }).to(
-          c,
-          {
-            autoAlpha: 0,
-          },
-          0.5
-        );
-      });
-    </script> -->
   </body>
 </html>

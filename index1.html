@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Three.js Resizing browser</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: -applesystem, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+      }
+      html,
+      body {
+        height: 100vh;
+        width: 100vw;
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@v0.153.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@v0.153.0/examples/jsm/"
+        }
+      }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+      /* Contents of style.css */
+      html {
+        scroll-behavior: smooth;
+      }
+      body::-webkit-scrollbar {
+        width: 0%;
+      }
+      body {
+        overflow-x: hidden;
+      }
+      .main-container {
+        position: fixed;
+        z-index: 1;
+      }
+      .webgl {
+        width: 100%;
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        touch-action: none;
+      }
+      #webgi-canvas-container {
+        width: 100vw;
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+        position: fixed;
+      }
+      .spacer-container {
+        background-color: #dedede;
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        height: 100vh;
+        align-content: center;
+        justify-content: center;
+        margin: 0;
+        padding: 0;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        overflow: hidden;
+      }
+      .spacer-container {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        height: 100vh;
+        background-color: aqua;
+      }
+      .spacer-container h1 {
+        text-align: center;
+        margin-top: 50px;
+      }
+      .section1,
+      .section2,
+      .section3,
+      .section4,
+      .section5,
+      .section6,
+      .section7,
+      .section8 .stn {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+        scroll-snap-align: start;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+      .info1,
+      .info {
+        position: absolute;
+        top: 10%;
+        display: flex;
+        flex-direction: column;
+        padding: 20px 20px;
+      }
+      .text1,
+      .text2,
+      .text3,
+      .text4 {
+        font-size: 18px;
+        color: rgb(226, 222, 222);
+      }
+      .secondary-nav {
+        height: 4rem;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: rgb(255, 255, 255);
+        width: 100%;
+        z-index: 2;
+        color: rgb(0, 0, 0);
+      }
+      .container {
+        color: white;
+        background-color: black;
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+      .logo-container {
+        position: absolute;
+        top: 0%;
+        left: 0%;
+        width: 100%;
+        height: 100vh;
+        background-color: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      #logo {
+        width: 400px;
+        height: 380px;
+      }
+      .intro {
+        height: 100vh;
+      }
+      .intro video {
+        height: 100vh;
+        width: 100%;
+        object-fit: cover;
+      }
+      .intro h1 {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 80px;
+        color: white;
+      }
+      .preference {
+        background-image: url("images/road-scenery.jpg"); /* Replace 'your-image.jpg' with the path to your image */
+        background-size: cover; /* Adjust how the image is sized */
+        background-position: center center; /* Adjust the position of the image */
+        background-repeat: no-repeat; /* Prevent image from repeating */
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+        font-size: 80px;
+      }
+      .btn {
+        padding: 0.7rem 1.7rem;
+        background-color: black;
+        color: white;
+        font-size: 2rem;
+        font-weight: bold;
+        cursor: pointer;
+        outline: none;
+        border: none;
+        border-radius: 5px;
+        flex: 1;
+      }
+      .parallax-section {
+        background-attachment: fixed;
+        height: 100vh;
+        color: black;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="secondary-nav">
+      <h1>Secondary Navigation</h1>
+    </nav>
+    <section class="main-container">
+      <div class="section1">
+        <div class="info1">
+          <h1 class="text1">Bi-Functional LED Projector headlamp</h1>
+          <p>
+            Flanked by signature naked wolf LED DRLs – offering unmatched
+            illumination and
+          </p>
+        </div>
+      </div>
+      <div class="section2 section">
+        <div class="info2 info">
+          <h1 class="text1">Dual Channel ABS Braking Technology</h1>
+          <p>
+            Take charge of emergency braking with full confidence. Our
+            twinchannel ABS feature comes into action ensuring wheels do not
+            lock or subsequently skid on any surface
+          </p>
+        </div>
+      </div>
+      <div class="section3 section">
+        <div class="info3 info">
+          <h1 class="text1">Dual Tone Aesthetics</h1>
+          <p>
+            Dynamic interplay of premium metallised dual colours. Darker in the
+            front and lighter towards the rear, it emphasises the contours of
+            the beas
+          </p>
+        </div>
+      </div>
+      <div class="section4 section">
+        <div class="info4 info">
+          <h1 class="text1">All- New Refined Engine</h1>
+          <p>
+            Own the streets with intoxicating acceleration and everyday
+            rideability of the new refined engine.16 PS (11.7 kW) Power, 14.65
+            Nm Torque, Twin Spark, Oil-cooled DTS-i engine
+          </p>
+        </div>
+      </div>
+      <div class="section5 section">
+        <div class="info5 info">
+          <h1 class="text1">Sporty Under Belly Exhaust</h1>
+          <p>
+            The sporty and precision-crafted exhaust system has been positioned
+            close to the bike’s overall center of gravity, improving balance and
+            handling, whilst also delivering smooth, instant and beast-like
+            power. Oh, and it looks agile as hell too
+          </p>
+        </div>
+      </div>
+      <div class="section6 section">
+        <div class="info6 info">
+          <h1 class="text1">Riding Ergonomics</h1>
+          <p>
+            Seat height is set at 795 mm to keep you always in control.
+            Moreover, the bike is sleek at rider thigh area to improve the
+            ground reachability
+          </p>
+        </div>
+      </div>
+      <div class="section7 section">
+        <div class="info7 info">
+          <h1 class="text1">New Monoshock Suspension</h1>
+          <p>New advanced suspension offers pinpoint handling and balance.</p>
+        </div>
+      </div>
+      <div class="section8 section">
+        <div class="info8 info">
+          <h1 class="text1">Best In Class Braking Technology</h1>
+          <p>
+            Greater power needs greater control, isn’t it? Unleash the power of
+            precision braking with 300 mm front disc and 230 mm rear disc brake.
+            (*Only for Dual channel ABS variant.)
+          </p>
+        </div>
+      </div>
+      <div id="webgi-canvas-container">
+        <canvas class="webgl"></canvas>
+      </div>
+    </section>
+    <section class="spacer-container">
+      <div class="intro">
+        <h1>The New Bajaj Pulsar N160</h1>
+        <video
+          id="desktopVideo"
+          src="/videos/motorbikeCinematic.mp4"
+          preload="auto"
+        ></video>
+      </div>
+      <section class="parallax-section">
+        <div class="preference">
+          <div>
+            <button class="btn thrill">Thrill Seeker</button>
+          </div>
+          <div>
+            <button class="btn">City Ride</button>
+          </div>
+          <div>
+            <button class="btn">Road Ride</button>
+          </div>
+        </div>
+      </section>
+      <div class="logo-container">
+        <img src="/images/logo.jpg" alt="" id="logo" />
+      </div>
+    </section>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/ScrollMagic.min.js"
+      integrity="sha256-2p2tRZlPowp3P/04Pw2rqVCSbhyV/IB7ZEVUglrDS/c="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/plugins/animation.gsap.js"
+      integrity="sha256-peenofh8a9TIqKdPKIeQE7mJvuwh+J0To7nslvpj1jI="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/plugins/debug.addIndicators.js"
+      integrity="sha256-31FC/OT6XpfjAhj9FuXjw5/wPXXawCAjJQ29E23/XPk="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"
+      integrity="sha256-lPE3wjN2a7ABWHbGz7+MKBJaykyzqCbU96BJWjio86U="
+      crossorigin="anonymous"
+    ></script>
+    <script type="module">
+      import * as THREE from "three";
+      import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+      import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+      gsap.registerPlugin(ScrollTrigger);
+
+      let sizes = {
+        width: window.innerWidth,
+        height: window.innerHeight,
+      };
+
+      //canvas
+      const canvas = document.querySelector("canvas.webgl");
+
+      //scene
+      const scene = new THREE.Scene();
+
+      //camera
+      const camera = new THREE.PerspectiveCamera(
+        45,
+        sizes.width / sizes.height,
+        0.1,
+        100
+      );
+      camera.position.set(0, 0, 10);
+      scene.add(camera);
+
+      // adding light in the scene
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+      scene.add(ambientLight);
+
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+      directionalLight.position.set(1, 2, 0);
+      scene.add(directionalLight);
+
+      // renderer
+      const renderer = new THREE.WebGLRenderer({ canvas: canvas });
+      renderer.setSize(sizes.width, sizes.height);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      renderer.setClearColor(0x808080, 1); // Set clear color to white with alpha 1
+
+      //controls for model and camera movement
+      const controls = new OrbitControls(camera, renderer.domElement);
+      controls.enableRotate = false;
+      controls.enableZoom = false;
+      controls.minPolarAngle = Math.PI / 2;
+      controls.maxPolarAngle = Math.PI / 2;
+
+      // render 3D model
+      let mesh = null;
+      const loader = new GLTFLoader().setPath("public/");
+      loader.load("Bike.glb", (gltf) => {
+        mesh = gltf.scene;
+        //set the position of the model
+        mesh.position.set(-3.1, -3.1, 1.6);
+
+        //rotate the model horizontally
+        mesh.rotation.y = Math.PI / 2.1;
+
+        //mesh scale the model
+        mesh.scale.set(4.9, 4.9, 4.9);
+        scene.add(mesh);
+
+        const sections = document.querySelectorAll(".stn");
+        const info = document.querySelectorAll(".info");
+        const meshPositions = [-3.0, -2.9, 0.1, 0.9, 1.7, 2.3, 2.8];
+        const durations = [2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5];
+
+        gsap.from(".info1", {
+          opacity: 0,
+          x: -150,
+          duration: 1.6,
+          ease: "power2.inOut",
+        });
+
+        sections.forEach((e, index) => {
+          let tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: e,
+              pin: true,
+              scrub: 5,
+              pinSpacing: false,
+            },
+          });
+          tl.to(mesh.position, {
+            x: meshPositions[index],
+            duration: durations[index],
+            ease: "power2.in",
+          });
+          tl.from(e, {
+            opacity: 0,
+            x: -110,
+            duration: 2.5,
+            ease: "expo.out",
+          }).to(e, {
+            opacity: 0,
+            delay: 0.1,
+            duration: 0.5,
+            ease: "expo.inout",
+          });
+        });
+      });
+
+      window.addEventListener("resize", () => {
+        let sizes = {
+          width: window.innerWidth,
+          height: window.innerHeight,
+        };
+
+        camera.aspect = sizes.width / sizes.height;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(sizes.width, sizes.height);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        renderer.render(scene, camera);
+      });
+
+      const spacerContainer = document.querySelector(".spacer-container");
+      const spacerOffset = spacerContainer.offsetTop;
+
+      window.addEventListener("scroll", () => {
+        const scrollPosition = window.scrollY + window.innerHeight;
+        if (scrollPosition >= spacerOffset) {
+          console.log("reached spacer container");
+        }
+      });
+
+      function animate() {
+        requestAnimationFrame(animate);
+        controls.update();
+        renderer.render(scene, camera);
+      }
+
+      animate();
+
+      const tl = gsap.timeline();
+      tl.from(".logo-container", { scale: 1.1, duration: 1.5 }).to(
+        ".logo-container",
+        {
+          opacity: 0,
+          duration: 2,
+          delay: 1,
+        }
+      );
+
+      if (window.innerWidth < 768) {
+        console.log("True");
+        // Hide the desktop video and show the mobile video
+        document.getElementById("desktopVideo").style.visibility = "none";
+        //   document.getElementById("mobileVideo").style.display = "block";
+      }
+
+      const intro = document.querySelector(".intro");
+      const video = intro.querySelector("video");
+      const text = intro.querySelector("h1");
+      //END SECTION
+      const section = document.querySelector("section");
+      const end = section.querySelector("h1");
+
+      const controller = new ScrollMagic.Controller();
+
+      //Scenes
+      let scene1 = new ScrollMagic.Scene({
+        duration: 20000,
+        triggerElement: intro,
+        triggerHook: 0,
+      })
+        .addIndicators()
+        .setPin(intro)
+        .addTo(controller);
+
+      //Text Animation
+      const textAnim = TweenMax.fromTo(text, 1, { opacity: 1 }, { opacity: 0 });
+
+      let scene2 = new ScrollMagic.Scene({
+        duration: 3000,
+        triggerElement: intro,
+        triggerHook: 0,
+      })
+        .setTween(textAnim)
+        .addTo(controller);
+
+      //Video Animation
+      let accelamount = 0.1;
+      let scrollpos = 0;
+      let delay = 0;
+      // let animationFrameId = null;
+
+      scene1.on("update", (e) => {
+        scrollpos = e.scrollPos / 1000;
+        // updateVideoCurrentTime();
+      });
+
+      setInterval(() => {
+        delay += (scrollpos - delay) * accelamount;
+        // console.log(scrollpos, delay);
+
+        video.currentTime = delay;
+      }, 33.3);
+      function changeBodyClass(newClass) {
+        document.body.className = newClass;
+      }
+
+      let scene3 = new ScrollMagic.Scene({
+        duration: "200%", // Adjust this value as needed for the desired parallax effect
+        triggerElement: section, // Change to your actual trigger element if needed
+        triggerHook: 1, // Adjust the triggerHook value as needed
+      })
+        .setTween(".preference", {
+          backgroundPosition: "50% 50%",
+          ease: Power0.easeNone,
+        }) // Adjust the values as needed for the desired effect
+        .addTo(controller);
+
+      const CTA = document.querySelector(".thrill");
+      CTA.addEventListener("click", function () {
+        document.querySelector(".spacer-container").style.zIndex = 0;
+      });
+    </script>
+  </body>
+</html>

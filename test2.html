@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Document</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Michroma", sans-serif;
+      }
+      .container {
+        color: white;
+        background-color: black;
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+      .logo-container {
+        position: absolute;
+        top: 0%;
+        left: 0%;
+        width: 100%;
+        height: 100vh;
+        background-color: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      #logo {
+        width: 400px;
+        height: 380px;
+      }
+      .intro {
+        height: 100vh;
+      }
+      .intro video {
+        height: 100vh;
+        width: 100%;
+        object-fit: cover;
+      }
+      .intro h1 {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 80px;
+        color: white;
+      }
+      .preference {
+        background-image: url("images/road-scenery.jpg"); /* Replace 'your-image.jpg' with the path to your image */
+        background-size: cover; /* Adjust how the image is sized */
+        background-position: center center; /* Adjust the position of the image */
+        background-repeat: no-repeat; /* Prevent image from repeating */
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+        font-size: 80px;
+      }
+      .btn {
+        padding: 0.7rem 1.7rem;
+        background-color: black;
+        color: white;
+        font-size: 2rem;
+        font-weight: bold;
+        cursor: pointer;
+        outline: none;
+        border: none;
+        border-radius: 5px;
+        flex: 1;
+      }
+      .parallax-section {
+        background-attachment: fixed;
+        height: 100vh;
+        color: black;
+      }
+      .secondary-nav {
+        height: 4rem;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: rgb(255, 255, 255);
+        width: 100%;
+        z-index: 100;
+        color: rgb(0, 0, 0);
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="secondary-nav">
+      <h1>Secondary Navigation</h1>
+    </nav>
+    <div class="intro">
+      <h1>The New Bajaj Pulsar N160</h1>
+      <!-- <video src="/bike-ride.mp4"></video> -->
+      <video
+        id="desktopVideo"
+        src="/videos/motorbikeCinematic.mp4"
+        preload="auto"
+      ></video>
+      <!-- <video id="mobileVideo" src="/mobile-video.mp4"></video> -->
+    </div>
+    <section class="parallax-section">
+      <div class="preference">
+        <div>
+          <button class="btn" onclick="changeBodyClass('thrill-seeker')">
+            Thrill Seeker
+          </button>
+        </div>
+        <div>
+          <button class="btn" onclick="changeBodyClass('city-ride')">
+            City Ride
+          </button>
+        </div>
+        <div>
+          <button class="btn" onclick="changeBodyClass('road-ride')">
+            Road Ride
+          </button>
+        </div>
+      </div>
+    </section>
+    <div class="logo-container">
+      <img src="/images/logo.jpg" alt="" id="logo" />
+    </div>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"
+      integrity="sha512-16esztaSRplJROstbIIdwX3N97V1+pZvV33ABoG1H2OyTttBxEGkTsoIVsiP1iaTtM8b3+hu2kB6pQ4Clr5yug=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/ScrollMagic.min.js"
+      integrity="sha256-2p2tRZlPowp3P/04Pw2rqVCSbhyV/IB7ZEVUglrDS/c="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/plugins/animation.gsap.js"
+      integrity="sha256-peenofh8a9TIqKdPKIeQE7mJvuwh+J0To7nslvpj1jI="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/plugins/debug.addIndicators.js"
+      integrity="sha256-31FC/OT6XpfjAhj9FuXjw5/wPXXawCAjJQ29E23/XPk="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"
+      integrity="sha256-lPE3wjN2a7ABWHbGz7+MKBJaykyzqCbU96BJWjio86U="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      const tl = gsap.timeline();
+      tl.from(".logo-container", { scale: 2, duration: 1.5 }).to(
+        ".logo-container",
+        {
+          opacity: 0,
+          duration: 2,
+          delay: 1,
+        }
+      );
+
+      if (window.innerWidth < 768) {
+        console.log("True");
+        // Hide the desktop video and show the mobile video
+        document.getElementById("desktopVideo").style.visibility = "none";
+        //   document.getElementById("mobileVideo").style.display = "block";
+      }
+
+      const intro = document.querySelector(".intro");
+      const video = intro.querySelector("video");
+      const text = intro.querySelector("h1");
+      //END SECTION
+      const section = document.querySelector("section");
+      const end = section.querySelector("h1");
+
+      const controller = new ScrollMagic.Controller();
+
+      //Scenes
+      let scene1 = new ScrollMagic.Scene({
+        duration: 20000,
+        triggerElement: intro,
+        triggerHook: 0,
+      })
+        .addIndicators()
+        .setPin(intro)
+        .addTo(controller);
+
+      //Text Animation
+      const textAnim = TweenMax.fromTo(text, 1, { opacity: 1 }, { opacity: 0 });
+
+      let scene2 = new ScrollMagic.Scene({
+        duration: 3000,
+        triggerElement: intro,
+        triggerHook: 0,
+      })
+        .setTween(textAnim)
+        .addTo(controller);
+
+      //Video Animation
+      let accelamount = 0.1;
+      let scrollpos = 0;
+      let delay = 0;
+      // let animationFrameId = null;
+
+      scene1.on("update", (e) => {
+        scrollpos = e.scrollPos / 1000;
+        // updateVideoCurrentTime();
+      });
+
+      setInterval(() => {
+        delay += (scrollpos - delay) * accelamount;
+        // console.log(scrollpos, delay);
+
+        video.currentTime = delay;
+      }, 33.3);
+
+      // function updateVideoCurrentTime() {
+      //   delay += (scrollpos - delay) * accelamount;
+      //   console.log(scrollpos, delay);
+      //   video.currentTime = delay;
+
+      //   animationFrameId = window.requestAnimationFrame(updateVideoCurrentTime);
+      // }
+
+      // function stopAnimation() {
+      //   if (animationFrameId) {
+      //     window.cancelAnimationFrame(animationFrameId);
+      //   }
+      // }
+
+      function changeBodyClass(newClass) {
+        document.body.className = newClass;
+      }
+
+      // Parallax effect for the "preference" section
+      let scene3 = new ScrollMagic.Scene({
+        duration: "200%", // Adjust this value as needed for the desired parallax effect
+        triggerElement: section, // Change to your actual trigger element if needed
+        triggerHook: 1, // Adjust the triggerHook value as needed
+      })
+        .setTween(".parallax-section", { backgroundPosition: "50% -100%" }) // Adjust the values as needed for the desired effect
+        .addTo(controller);
+    </script>
+  </body>
+</html>

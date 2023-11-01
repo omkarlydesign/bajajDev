@@ -83,7 +83,8 @@
       .section5,
       .section6,
       .section7,
-      .section8 .section {
+      .section8 .section,
+      .section9 {
         position: relative;
         z-index: 1;
         width: 100%;
@@ -96,15 +97,13 @@
         -ms-user-select: none;
         user-select: none;
       }
+
       .info1,
       .info {
         position: absolute;
         display: flex;
         flex-direction: column;
         padding: 20px 20px;
-      }
-      .text1 {
-        /* opacity: 0; */
       }
       .text1,
       .text2,
@@ -116,6 +115,9 @@
     </style>
   </head>
   <body>
+    <nav class="secondary-nav">
+      <h1>Secondary Navigation</h1>
+    </nav>
     <section class="main-container">
       <div class="section1">
         <div class="info1">
@@ -193,18 +195,13 @@
           </p>
         </div>
       </div>
+      <div class="section9"></div>
       <div id="webgi-canvas-container">
         <canvas class="webgl"></canvas>
       </div>
     </section>
 
-    <section class="spacer-container">
-      <h1>this is video</h1>
-      <h1>this is video</h1>
-      <h1>this is video</h1>
-      <h1>this is video</h1>
-      <h1>this is video</h1>
-    </section>
+    <!-- <section class="spacer-container"></section> -->
 
     <script type="module">
       import * as THREE from "three";
@@ -271,12 +268,6 @@
         mesh.scale.set(4.9, 4.9, 4.9);
         scene.add(mesh);
 
-        const sections = document.querySelectorAll(".section");
-        const info = document.querySelectorAll(".info");
-        console.log(info);
-        const meshPositions = [-3.0, -2.9, 0.1, 1.1, 1.7, 2.3, 2.8];
-        const durations = [2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5];
-
         gsap.from(".info1", {
           opacity: 0,
           x: -150,
@@ -284,53 +275,216 @@
           ease: "power2.inOut",
         });
 
-        sections.forEach((e, index) => {
-          let tl = gsap.timeline({
-            scrollTrigger: {
-              trigger: e,
-              pin: true,
-              scrub: 5,
-              pinSpacing: false,
-            },
-          });
-          tl.to(mesh.position, {
-            x: meshPositions[index],
-            duration: durations[index],
-            ease: "power2.in",
-          });
-          tl.from(e, {
-            opacity: 0,
-            x: -110,
-            duration: 2.5,
-            ease: "expo.out",
-          }).to(e, {
-            opacity: 0,
-            delay: 0.1,
-            duration: 0.5,
-            ease: "expo.inout",
-          });
+        //section 2 and info2
+        let tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: ".section2",
+            start: "top 10px",
+            end: "top 10px",
+            pin: true,
+            endTrigger: ".section3",
+            scrub: 1,
+            markers: true,
+          },
         });
-        // //section 2 and info2
-        // let tl = gsap.timeline({
-        //   scrollTrigger: {
-        //     trigger: ".section2",
-        //     pin: true,
-        //     scrub: 1,
-        //     pinSpacing: false,
-        //     markers: true,
-        //   },
-        // });
-        // tl.from(".info2", {
-        //   opacity: 0,
-        //   x: -150,
-        //   duration: 2.5,
-        //   ease: "expo.out",
-        // }).to(".info2", {
-        //   opacity: 0,
-        //   delay: 0.1,
-        //   duration: 0.5,
-        //   ease: "expo.inout",
-        // });
+        tl.to(mesh.position, {
+          x: -3.0,
+          duration: 1.3,
+          ease: "power1.in",
+        })
+          .from(".info2", {
+            opacity: 0,
+            y: "100",
+            duration: 1.3,
+            ease: "power1.inOut",
+          })
+          .to(".info2", {
+            opacity: 0,
+            x: "-100",
+            duration: 1.7,
+            delay: 3.9,
+            ease: "power1.inOut",
+          });
+
+        //section 3 and info3
+        let t2 = gsap.timeline({
+          scrollTrigger: {
+            trigger: ".section3",
+            start: "top 10px",
+            end: "top 10px",
+            pin: true,
+            endTrigger: ".section4",
+            scrub: 1,
+            markers: true,
+          },
+        });
+        t2.to(mesh.position, {
+          x: -2.9,
+          duration: 1.3,
+          ease: "power1.in",
+        })
+          .from(".info3", {
+            opacity: 0,
+            y: "100",
+            duration: 1.3,
+            ease: "power1.inOut",
+          })
+          .to(".info3", {
+            opacity: 0,
+            x: "-100",
+            duration: 1.3,
+            ease: "power1.inOut",
+          });
+
+        //section 4 and info4
+        let t3 = gsap.timeline({
+          scrollTrigger: {
+            trigger: ".section4",
+            start: "top 10px",
+            end: "top 10px",
+            pin: true,
+            endTrigger: ".section5",
+            scrub: 1,
+            markers: true,
+          },
+        });
+        t3.to(mesh.position, {
+          x: -2.8,
+          duration: 1.3,
+          ease: "power1.inOut",
+        })
+          .from(".info4", {
+            opacity: 0,
+            y: "100",
+            duration: 1.3,
+            ease: "power1.inOut",
+          })
+          .to(".info4", {
+            opacity: 0,
+            x: "-100",
+            duration: 1.3,
+            ease: "power1.inOut",
+          });
+
+        //section 5 and info5
+        let t4 = gsap.timeline({
+          scrollTrigger: {
+            trigger: ".section5",
+            start: "top 10px",
+            end: "top 10px",
+            pin: true,
+            endTrigger: ".section6",
+            scrub: 1,
+            markers: true,
+          },
+        });
+        t4.to(mesh.position, {
+          x: -1.1,
+          duration: 1.3,
+          ease: "power1.inOut",
+        })
+          .from(".info5", {
+            opacity: 0,
+            y: "100",
+            duration: 1.3,
+            ease: "power1.inOut",
+          })
+          .to(".info5", {
+            opacity: 0,
+            x: "-100",
+            duration: 1.3,
+            ease: "power1.inOut",
+          });
+
+        //section 6 and info6
+        let t5 = gsap.timeline({
+          scrollTrigger: {
+            trigger: ".section6",
+            start: "top 10px",
+            end: "top 10px",
+            pin: true,
+            endTrigger: ".section7",
+            scrub: 1,
+            markers: true,
+          },
+        });
+        t5.to(mesh.position, {
+          x: 0.1,
+          duration: 3.3,
+          ease: "power1.inOut",
+        })
+          .from(".info6", {
+            opacity: 0,
+            y: "100",
+            duration: 1.3,
+            ease: "power1.inOut",
+          })
+          .to(".info6", {
+            opacity: 0,
+            x: "-100",
+            duration: 1.3,
+            ease: "power1.inOut",
+          });
+
+        //section 7 and info7
+        let t6 = gsap.timeline({
+          scrollTrigger: {
+            trigger: ".section7",
+            start: "top 10px",
+            end: "top 10px",
+            pin: true,
+            endTrigger: ".section8",
+            scrub: 1,
+            markers: true,
+          },
+        });
+        t6.to(mesh.position, {
+          x: 1.6,
+          duration: 1.3,
+          ease: "power1.inOut",
+        })
+          .from(".info7", {
+            opacity: 0,
+            y: "100",
+            duration: 1.3,
+            ease: "power1.inOut",
+          })
+          .to(".info7", {
+            opacity: 0,
+            x: "-100",
+            duration: 1.3,
+            ease: "power1.inOut",
+          });
+
+        //section 8 and info8
+        let t7 = gsap.timeline({
+          scrollTrigger: {
+            trigger: ".section8",
+            start: "top 10px",
+            end: "top 10px",
+            pin: true,
+            endTrigger: ".section9",
+            scrub: 1,
+            markers: true,
+          },
+        });
+        t7.to(mesh.position, {
+          x: 2.1,
+          duration: 1.3,
+          ease: "power1.inOut",
+        })
+          .from(".info8", {
+            opacity: 0,
+            y: "100",
+            duration: 1.3,
+            ease: "power1.inOut",
+          })
+          .to(".info8", {
+            opacity: 0,
+            x: "-100",
+            duration: 1.3,
+            ease: "power1.inOut",
+          });
       });
 
       window.addEventListener("resize", () => {
@@ -348,15 +502,15 @@
         renderer.render(scene, camera);
       });
 
-      const spacerContainer = document.querySelector(".spacer-container");
-      const spacerOffset = spacerContainer.offsetTop;
+      // const spacerContainer = document.querySelector(".spacer-container");
+      // const spacerOffset = spacerContainer.offsetTop;
 
-      window.addEventListener("scroll", () => {
-        const scrollPosition = window.scrollY + window.innerHeight;
-        if (scrollPosition >= spacerOffset) {
-          console.log("reached spacer container");
-        }
-      });
+      // window.addEventListener("scroll", () => {
+      //   const scrollPosition = window.scrollY + window.innerHeight;
+      //   if (scrollPosition >= spacerOffset) {
+      //     console.log("reached spacer container");
+      //   }
+      // });
 
       function animate() {
         requestAnimationFrame(animate);

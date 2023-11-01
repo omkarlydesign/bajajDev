@@ -2,25 +2,31 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Three.js Resizing browser</title>
+    <title>Document</title>
     <style>
-      * {
+      html {
+        scroll-behavior: smooth;
+      }
+      body::-webkit-scrollbar {
+        width: 0%;
+      }
+      body {
+        overflow-x: hidden;
         margin: 0;
         padding: 0;
-        box-sizing: border-box;
-        font-family: -applesystem, BlinkMacSystemFont, "Segoe UI", Roboto,
-          Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
       }
-      html,
-      body {
+      /* .webgl {
+        width: 100%;
         height: 100vh;
-        width: 100vw;
-      }
+        margin: 0;
+        padding: 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        touch-action: none;
+      } */
     </style>
-    <!-- <link rel="stylesheet" href="style.css" /> -->
-
     <script type="importmap">
       {
         "imports": {
@@ -30,295 +36,69 @@
       }
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <style>
-      /* Contents of style.css */
-      body::-webkit-scrollbar {
-        width: 0%;
-      }
-      body {
-        overflow-x: hidden;
-      }
-      .webgl {
-        width: 100%;
-        height: 100vh;
-        margin: 0;
-        padding: 0;
-        position: fixed;
-        top: 0;
-        left: 0;
-        touch-action: none;
-      }
-
-      #webgi-canvas-container {
-        width: 100vw;
-        height: 100vh;
-        margin: 0;
-        padding: 0;
-        position: fixed;
-      }
-
-      .spacer,
-      .section1,
-      .section {
-        position: relative;
-        z-index: 1;
-        width: 100%;
-        height: 100vh;
-        margin: 0;
-        padding: 0;
-        scroll-snap-align: start;
-        -moz-user-select: none;
-        -webkit-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-      }
-      .info1 {
-        position: absolute;
-        top: 2%;
-        left: 10%;
-      }
-      .info2 {
-        position: absolute;
-        top: 2%;
-        right: 40%;
-      }
-      .info3 {
-        position: absolute;
-        top: 2%;
-        left: 10%;
-      }
-      .info4 {
-        position: absolute;
-        top: 2%;
-        left: 10%;
-      }
-      .text1 {
-        opacity: 0;
-      }
-      .text1,
-      .text2,
-      .text3,
-      .text4 {
-        font-size: 18px;
-        color: black;
-      }
-    </style>
   </head>
   <body>
-    <div class="section1">
-      <div class="info1">
-        <h1 class="text1">Text 1</h1>
-      </div>
-    </div>
-    <div class="section">
-      <div class="info2">
-        <h1 class="text1">Text 2</h1>
-      </div>
-    </div>
-    <div class="section">
-      <div class="info3">
-        <h1 class="text1">Text 3</h1>
-      </div>
-    </div>
-    <div class="section">
-      <div class="info4">
-        <h1 class="text1">Text 4</h1>
-      </div>
-    </div>
-    <div class="section">
-      <div class="info5">
-        <h1 class="text1">Text 5</h1>
-      </div>
-    </div>
-    <div class="spacer"></div>
-
-    <div id="webgi-canvas-container">
-      <canvas class="webgl"></canvas>
-    </div>
+    <canvas class="webgl"></canvas>
     <script type="module">
       import * as THREE from "three";
-      import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-      import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-      gsap.registerPlugin(ScrollTrigger);
-
-      let sizes = {
+      const canvas = document.querySelector("canvas.webgl");
+      // Scene
+      const scene = new THREE.Scene();
+      // Camera
+      const sizes = {
         width: window.innerWidth,
         height: window.innerHeight,
       };
-
-      //canvas
-      const canvas = document.querySelector("canvas.webgl");
-
-      //scene
-      const scene = new THREE.Scene();
-
-      //camera
       const camera = new THREE.PerspectiveCamera(
-        45,
-        sizes.width / sizes.height,
-        0.1,
-        100
+        35,
+        sizes.width / sizes.height
       );
-      camera.position.set(0, 0, 10);
+      camera.position.set(0, 0, 5);
       scene.add(camera);
 
-      // adding light in the scene
-      const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
-      scene.add(ambientLight);
-
-      const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-      directionalLight.position.set(1, 2, 0);
-      scene.add(directionalLight);
-
-      // renderer
-      const renderer = new THREE.WebGLRenderer({ canvas: canvas });
-      renderer.setSize(sizes.width, sizes.height);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-      renderer.setClearColor(0xffffff, 1); // Set clear color to white with alpha 1
+      // Renderer
+      const renderer = new THREE.WebGLRenderer({
+        canvas: canvas,
+        antialias: true,
+        alpha: true,
+      });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.render(scene, camera);
 
       const textureLoader = new THREE.TextureLoader();
-      const bgImg = textureLoader.load("images/Race.jpg");
-      renderer.setClearColor(0x000000, 1); // Set clear color to black with alpha 0
+      const bgImg = textureLoader.load("images/Mountain_bg.jpg");
+      bgImg.wrapS = THREE.RepeatWrapping;
+      bgImg.repeat.x = 3; // Number of times the texture should repeat horizontally
+
+      renderer.setClearColor(0x000000, 0);
       scene.background = bgImg;
 
-      //controls for model and camera movement
-      const controls = new OrbitControls(camera, renderer.domElement);
-      controls.enableRotate = false;
-      controls.enableZoom = false;
-      controls.minPolarAngle = Math.PI / 2;
-      controls.maxPolarAngle = Math.PI / 2;
-
-      // render 3D model
-      let mesh = null;
-      const loader = new GLTFLoader().setPath("public/");
-      loader.load("Bike.glb", (gltf) => {
-        mesh = gltf.scene;
-        //set the position of the model
-        mesh.position.set(-8.1, -3.1, 0);
-
-        //rotate the model horizontally
-        mesh.rotation.y = Math.PI / 2;
-
-        //mesh scale the model
-        mesh.scale.set(1.4, 1.4, 1.4);
-        scene.add(mesh);
-
-        gsap.to(".text1", {
-          opacity: 1,
-          x: 40,
-          duration: 1.9,
-        });
-
-        const sections = document.querySelectorAll(".section");
-        sections.forEach((e, index) => {
-          let tl = gsap.timeline({
-            scrollTrigger: {
-              trigger: e,
-              pinSpacing: false,
-              start: "top 15%",
-              scrub: true,
-              markers: true,
-              pin: true,
-            },
-          });
-          tl.from(e, {
-            opacity: 0,
-            x: -350,
-            duration: 2.1,
-            stagger: 0.3,
-            ease: "power3.inOut",
-          }).to(e, {
-            opacity: 0,
-            stagger: 0.4,
-            duration: 2,
-            ease: "power3.inOut",
-          });
-
-          gsap.to(mesh.position, {
-            x: 9.1,
-            duration: 15.1,
-            ease: "power1.inOut",
-            delay: 4.3
-          });
-        });
-      });
-
       window.addEventListener("resize", () => {
-        let sizes = {
-          width: window.innerWidth,
-          height: window.innerHeight,
-        };
+        sizes.width = window.innerWidth;
+        sizes.height = window.innerHeight;
 
         camera.aspect = sizes.width / sizes.height;
         camera.updateProjectionMatrix();
-
         renderer.setSize(sizes.width, sizes.height);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-        renderer.render(scene, camera);
       });
 
-      function animate() {
-        requestAnimationFrame(animate);
-        controls.update();
-        renderer.render(scene, camera);
+      window.dispatchEvent(new Event("resize"));
+
+      // Render the scene
+      function animateTexture() {
+        const speed = 0.004; // Adjust the speed of the texture movement
+        bgImg.offset.x += speed; // Update the texture offset in the x-direction
+
+        // Reset texture offset when it reaches the end of the loop
+        if (bgImg.offset.x > 1) {
+          bgImg.offset.x = 0;
+        }
+
+        renderer.render(scene, camera); // Render the scene with updated texture offset
+        requestAnimationFrame(animateTexture);
       }
-
-      animate();
-
-      // const section = gsap.utils.toArray(".section");
-      // section.forEach((s) => {
-      //   let tl = gsap.timeline({
-      //     scrollTrigger: {
-      //       trigger: s,
-      //       pin: true,
-      //       pinSpacing: false,
-      //       scrub: 1,
-      //       markers: true,
-      //     },
-      //   });
-      //   tl.to(s, {
-      //     x: "100%",
-      //     duration: 1,
-      //     ease: "power2.inOut",
-      //   }).to(
-      //     mesh.position,
-      //     {
-      //       x: -3.5,
-      //       duration: 2,
-      //       ease: "power1.inOut",
-      //     },
-      //     "-=2"
-      //   );
-      // });
+      animateTexture();
     </script>
-    <!-- <script>
-      gsap.registerPlugin(ScrollTrigger);
-      const containers = gsap.utils.toArray(".section");
-      containers.forEach((c) => {
-        let tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: c,
-            pin: true,
-            pinSpacing: false,
-            scrub: true,
-            markers: true,
-          },
-        });
-        tl.to(c, {
-          y: -20,
-          autoAlpha: 1,
-        }).to(
-          c,
-          {
-            autoAlpha: 0,
-          },
-          0.5
-        );
-      });
-    </script> -->
   </body>
 </html>

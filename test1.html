@@ -69,7 +69,8 @@
       const textureLoader = new THREE.TextureLoader();
       const bgImg = textureLoader.load("images/Mountain_bg.jpg");
       bgImg.wrapS = THREE.RepeatWrapping;
-      bgImg.repeat.x = 3; // Number of times the texture should repeat horizontally
+      bgImg.wrapT = THREE.RepeatWrapping;
+      bgImg.repeat.x = 0.113554;
 
       renderer.setClearColor(0x000000, 0);
       scene.background = bgImg;
@@ -87,7 +88,7 @@
 
       // Render the scene
       function animateTexture() {
-        const speed = 0.004; // Adjust the speed of the texture movement
+        const speed = 0.005; // Adjust the speed of the texture movement
         bgImg.offset.x += speed; // Update the texture offset in the x-direction
 
         // Reset texture offset when it reaches the end of the loop

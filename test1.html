@@ -26,6 +26,10 @@
         left: 0;
         touch-action: none;
       } */
+      canvas {
+        background-image: url("videos/GIF-1.gif");
+        background-size: cover;
+      }
     </style>
     <script type="importmap">
       {
@@ -36,11 +40,14 @@
       }
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   </head>
   <body>
     <canvas class="webgl"></canvas>
     <script type="module">
       import * as THREE from "three";
+      import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+      import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
       const canvas = document.querySelector("canvas.webgl");
       // Scene
@@ -51,13 +58,21 @@
         height: window.innerHeight,
       };
       const camera = new THREE.PerspectiveCamera(
-        35,
+        45,
         sizes.width / sizes.height,
         0.1,
-        1000
+        100
       );
-      camera.position.set(0, 0, 5);
+      camera.position.set(0, 0, 10);
       scene.add(camera);
+
+      // adding light in the scene
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+      scene.add(ambientLight);
+
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+      directionalLight.position.set(1, 2, 0);
+      scene.add(directionalLight);
 
       // Renderer
       const renderer = new THREE.WebGLRenderer({
@@ -68,14 +83,37 @@
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.render(scene, camera);
 
-      const textureLoader = new THREE.TextureLoader();
-      const bgImg = textureLoader.load("images/Mountain_bg.jpg");
-      bgImg.wrapS = THREE.RepeatWrapping;
-      bgImg.wrapT = THREE.RepeatWrapping;
-      bgImg.repeat.x = 0.113554;
+      //controls for model and camera movement
+      const controls = new OrbitControls(camera, renderer.domElement);
+      controls.enableRotate = false;
+      controls.enableZoom = false;
+      controls.minPolarAngle = Math.PI / 2;
+      controls.maxPolarAngle = Math.PI / 2;
 
-      renderer.setClearColor(0x000000, 0);
-      scene.background = bgImg;
+      // const textureLoader = new THREE.TextureLoader();
+      // const bgImg = textureLoader.load("videos/GIF-1.gif");
+      // bgImg.wrapS = THREE.RepeatWrapping;
+      // bgImg.wrapT = THREE.RepeatWrapping;
+      // bgImg.repeat.x = 0.113554;
+
+      // renderer.setClearColor(0x000000, 0);
+      // scene.background = bgImg;
+
+      let mesh = null;
+      const loader = new GLTFLoader().setPath("public/");
+      loader.load("Bike.glb", (gltf) => {
+        mesh = gltf.scene;
+        console.log(mesh);
+        //set the position of the model
+        mesh.position.set(-2.1, -2.9, 1.6);
+
+        //rotate the model horizontally
+        mesh.rotation.y = Math.PI / 2.1;
+
+        //mesh scale the model
+        mesh.scale.set(2.9, 2.9, 2.9);
+        scene.add(mesh);
+      });
 
       window.addEventListener("resize", () => {
         sizes.width = window.innerWidth;
@@ -90,13 +128,13 @@
 
       // Render the scene
       function animateTexture() {
-        const speed = 0.00412; // Adjust the speed of the texture movement
-        bgImg.offset.x += speed; // Update the texture offset in the x-direction
+        // const speed = 0.00412; // Adjust the speed of the texture movement
+        // bgImg.offset.x += speed; // Update the texture offset in the x-direction
 
-        // Reset texture offset when it reaches the end of the loop
-        if (bgImg.offset.x > 1) {
-          bgImg.offset.x = 0;
-        }
+        // // Reset texture offset when it reaches the end of the loop
+        // if (bgImg.offset.x > 1) {
+        //   bgImg.offset.x = 0;
+        // }
 
         renderer.render(scene, camera); // Render the scene with updated texture offset
         requestAnimationFrame(animateTexture);

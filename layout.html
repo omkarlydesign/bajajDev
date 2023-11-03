@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+      body::-webkit-scrollbar {
+        width: 0%;
+      }
+      body {
+        overflow-x: hidden;
+        margin: 0;
+        padding: 0;
+      }
+      /* .webgl {
+          width: 100%;
+          height: 100vh;
+          margin: 0;
+          padding: 0;
+          position: fixed;
+          top: 0;
+          left: 0;
+          touch-action: none;
+        } */
+      .main {
+        width: 100%;
+        height: 100vh;
+        position: fixed;
+        margin-top: 56px;
+      }
+      .background-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: blur(2px);
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+      }
+      .info {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        width: 250px;
+        display: flex;
+        gap: 40px;
+        align-items: center;
+        flex-direction: column;
+      }
+      .btn-container {
+        margin-top: 20px;
+      }
+      .btn {
+        width: 150px;
+        height: 30px;
+        border: 1px solid;
+        font-size: 18px;
+      }
+      .animate-container {
+        width: 700%;
+        height: auto;
+        position: relative;
+        margin-top: 60px;
+      }
+      .section {
+        width: 100%;
+        height: calc(100vh - 56px);
+        position: relative;
+      }
+      .bike-info {
+        width: 360px;
+        position: absolute;
+        top: 22%;
+        left: 20px;
+        z-index: 2;
+        color: black;
+        font-weight: 700;
+        font-size: 18px;
+      }
+      .webgl {
+        width: 100%;
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        touch-action: none;
+      }
+      #webgi-canvas-container {
+        width: 100vw;
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+        position: fixed;
+      }
+      .background-animation {
+        position: fixed;
+        width: 100%;
+        height: 100vh;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        background-image: url("videos/GIF-1-MOBILE.gif");
+        background-size: cover;
+      }
+      @media (max-width: 768px) {
+        .btn {
+          width: 150px;
+          height: 50px;
+          font-size: 18px;
+        }
+      }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@v0.153.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@v0.153.0/examples/jsm/"
+        }
+      }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  </head>
+  <body>
+    <div class="flex flex-col w-full overflow-x-hidden">
+      <nav class="navbar h-14 w-full fixed z-[2000]">
+        <div class="primary-navbar">
+          <h1 class="text-xl font-semibold text-center bg-slate-600 text-white">
+            Primary Navbar
+          </h1>
+        </div>
+        <div class="secondary-navbar">
+          <h1 class="text-xl font-semibold text-center bg-red-300">
+            Secondary-navbar
+          </h1>
+        </div>
+      </nav>
+
+      <div
+        class="main flex flex-col text-center justify-evenly items-center z-[3]"
+      >
+        <img class="background-image" src="/images/bg-img.jpg" alt="Bike" />
+        <div class="info text-white">
+          <h1>I am a</h1>
+          <div class="btn-container flex flex-col gap-4">
+            <button class="thrill-btn btn">Thrill Seeker</button>
+            <button class="urban-btn btn">Urban Explorer</button>
+            <button class="roads-btn btn">Road Runner</button>
+          </div>
+        </div>
+      </div>
+
+      <section class="animate-container">
+        <div class="background-animation"></div>
+        <div class="section1 section">
+          <div class="info1 bike-info">
+            <h1 class="text1">Bi-Functional LED Projector headlamp</h1>
+            <p class="desc1">
+              Flanked by signature naked wolf LED DRLs offering unmatched
+              illumination and
+            </p>
+          </div>
+        </div>
+
+        <div class="section2 section">
+          <div class="info2 bike-info">
+            <h1 class="text2">Dual Channel ABS Braking Technology</h1>
+            <p class="desc2">
+              Take charge of emergency braking with full confidence. Our
+              twinchannel ABS feature comes into action ensuring wheels do not
+              lock or subsequently skid on any surface
+            </p>
+          </div>
+        </div>
+
+        <div class="section3 section">
+          <div class="info3 bike-info">
+            <h1 class="text3">Dual Tone Aesthetics</h1>
+            <p class="desc3">
+              Dynamic interplay of premium metallised dual colours. Darker in
+              the front and lighter towards the rear, it emphasises the contours
+              of the beas
+            </p>
+          </div>
+        </div>
+
+        <div class="section4 section">
+          <div class="info4 bike-info">
+            <h1 class="text4">All- New Refined Engine</h1>
+            <p class="desc4">
+              Own the streets with intoxicating acceleration and everyday
+              rideability of the new refined engine.16 PS (11.7 kW) Power, 14.65
+              Nm Torque, Twin Spark, Oil-cooled DTS-i engine
+            </p>
+          </div>
+        </div>
+
+        <div class="section5 section">
+          <div class="info5 bike-info">
+            <h1 class="text5">Sporty Under Belly Exhaust</h1>
+            <p class="desc5">
+              The sporty and precision-crafted exhaust system has been
+              positioned close to the bike’s overall center of gravity,
+              improving balance and handling, whilst also delivering smooth,
+              instant and beast-like power. Oh, and it looks agile as hell too
+            </p>
+          </div>
+        </div>
+
+        <div class="section6 section">
+          <div class="info6 bike-info">
+            <h1 class="text6">Riding Ergonomics</h1>
+            <p class="desc6">
+              Seat height is set at 795 mm to keep you always in control.
+              Moreover, the bike is sleek at rider thigh area to improve the
+              ground reachability
+            </p>
+          </div>
+        </div>
+
+        <div class="section7 section">
+          <div class="info7 bike-info">
+            <h1 class="text7">New Monoshock Suspension</h1>
+            <p class="desc7">
+              New advanced suspension offers pinpoint handling and balance.
+            </p>
+          </div>
+        </div>
+
+        <div class="section8 section">
+          <div class="info8 bike-info">
+            <h1 class="text8">Best In Class Braking Technology</h1>
+            <p class="desc8">
+              Greater power needs greater control, isn’t it? Unleash the power
+              of precision braking with 300 mm front disc and 230 mm rear disc
+              brake. (*Only for Dual channel ABS variant.)
+            </p>
+          </div>
+        </div>
+        <div id="webgi-canvas-container">
+          <canvas class="webgl"></canvas>
+        </div>
+      </section>
+    </div>
+
+    <script type="module">
+      import * as THREE from "three";
+      import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+      import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+      gsap.registerPlugin(ScrollTrigger);
+
+      const canvas = document.querySelector("canvas.webgl");
+      // Scene
+      const scene = new THREE.Scene();
+      // Camera
+      const sizes = {
+        width: window.innerWidth,
+        height: window.innerHeight,
+      };
+      const camera = new THREE.PerspectiveCamera(
+        45,
+        sizes.width / sizes.height,
+        0.1,
+        100
+      );
+      camera.position.set(0, 0, 10);
+      scene.add(camera);
+
+      // adding light in the scene
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+      scene.add(ambientLight);
+
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+      directionalLight.position.set(1, 2, 0);
+      scene.add(directionalLight);
+
+      // Renderer
+      const renderer = new THREE.WebGLRenderer({
+        canvas: canvas,
+        antialias: true,
+        alpha: true,
+      });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.render(scene, camera);
+
+      //controls for model and camera movement
+      const controls = new OrbitControls(camera, renderer.domElement);
+      controls.enableRotate = false;
+      controls.enableZoom = false;
+      controls.minPolarAngle = Math.PI / 2;
+      controls.maxPolarAngle = Math.PI / 2;
+
+      let mesh = null;
+      const loader = new GLTFLoader().setPath("public/");
+      loader.load("Bike.glb", (gltf) => {
+        mesh = gltf.scene;
+        //set the position of the model
+        mesh.position.set(-4.1, -2.9, 1.6);
+        //rotate the model horizontally
+        mesh.rotation.y = Math.PI / 2.1;
+        //mesh scale the model
+        mesh.scale.set(2.9, 2.9, 2.9);
+        scene.add(mesh);
+
+        //intial animation
+        document.addEventListener("click", function () {
+          const mainElement = document.querySelector(".main");
+          mainElement.classList.add("hidden");
+
+          let tl = gsap.timeline();
+          tl.to(mesh.position, {
+            x: -3.2,
+            duration: 1.2,
+            ease: "none",
+          });
+          tl.from(
+            ".text1",
+            {
+              opacity: 0,
+              x: "100",
+              duration: 0.9,
+              ease: "power1.inOut",
+            },
+            "<"
+          );
+          tl.from(
+            ".desc1",
+            {
+              opacity: 0,
+              x: "100",
+              duration: 0.6,
+              ease: "power1.out",
+            },
+            1
+          );
+        });
+
+        // gsap.from(".info2", {
+        //   opacity: 0,
+        //   x: "100",
+        //   duration: 1.1,
+        //   ease: "power1.inOut",
+        //   scrollTrigger: {
+        //     trigger: ".section2",
+        //     start: "top 10%",
+        //     pin: true,
+        //     markers: true,
+        //   },
+        // });
+
+        //section2
+        let t1 = gsap.timeline({
+          scrollTrigger: {
+            trigger: ".section2",
+            start: "top 10%",
+            endTrigger: ".section3",
+            pin: true,
+            markers: true,
+          },
+        });
+        t1.to(mesh.position, {
+          x: -2.9,
+          duration: 1.1,
+          ease: "power1.out",
+        });
+        t1.from(
+          ".text2",
+          {
+            opacity: 0,
+            x: "100",
+            duration: 1,
+            ease: "power1.out",
+          },
+          "<"
+        ).to(".text2", {
+          opacity: 0,
+          x: "-100",
+          duration: 0.6,
+          delay: 0.6,
+          ease: "power1.out",
+        });
+        t1.from(
+          ".desc2",
+          {
+            opacity: 0,
+            x: "100",
+            duration: 1,
+            delay: 0.6,
+            ease: "power1.out",
+          },
+          "1"
+        ).to(".desc2", {
+          opacity: 0,
+          x: "-100",
+          duration: 0.6,
+          ease: "power1.out",
+        });
+
+        //section3
+        let t2 = gsap.timeline({
+          scrollTrigger: {
+            trigger: ".section3",
+            start: "top 10%",
+            endTrigger: ".section4",
+            pin: true,
+            markers: true,
+          },
+        });
+        t2.to(mesh.position, {
+          x: -2.7,
+          duration: 1.1,
+          ease: "power1.out",
+        });
+        t2.from(
+          ".text3",
+          {
+            opacity: 0,
+            x: "100",
+            duration: 1,
+            ease: "power1.out",
+          },
+          "<"
+        ).to(".text3", {
+          opacity: 0,
+          x: "-100",
+          duration: 0.6,
+          delay: 0.6,
+          ease: "power1.out",
+        });
+        t2.from(
+          ".desc3",
+          {
+            opacity: 0,
+            x: "100",
+            duration: 1,
+            delay: 0.6,
+            ease: "power1.out",
+          },
+          "1"
+        ).to(".desc3", {
+          opacity: 0,
+          x: "-100",
+          duration: 0.6,
+          ease: "power1.out",
+        });
+
+        //section4
+        let t3 = gsap.timeline({
+          scrollTrigger: {
+            trigger: ".section4",
+            start: "top 10%",
+            endTrigger: ".section5",
+            pin: true,
+            markers: true,
+          },
+        });
+        t3.to(mesh.position, {
+          x: -2.1,
+          duration: 1.1,
+          ease: "power1.out",
+        });
+        t3.from(
+          ".text4",
+          {
+            opacity: 0,
+            x: "100",
+            duration: 1,
+            ease: "power1.out",
+          },
+          "<"
+        ).to(".text4", {
+          opacity: 0,
+          x: "-100",
+          duration: 0.6,
+          delay: 0.6,
+          ease: "power1.out",
+        });
+        t3.from(
+          ".desc4",
+          {
+            opacity: 0,
+            x: "100",
+            duration: 1,
+            delay: 0.6,
+            ease: "power1.out",
+          },
+          "1"
+        ).to(".desc4", {
+          opacity: 0,
+          x: "-100",
+          duration: 0.6,
+          ease: "power1.out",
+        });
+
+        //section5
+        let t4 = gsap.timeline({
+          scrollTrigger: {
+            trigger: ".section5",
+            start: "top 10%",
+            endTrigger: ".section6",
+            pin: true,
+            markers: true,
+          },
+        });
+        t4.to(mesh.position, {
+          x: -1.1,
+          duration: 1.1,
+          ease: "power1.out",
+        });
+        t4.from(
+          ".text5",
+          {
+            opacity: 0,
+            x: "100",
+            duration: 1,
+            ease: "power1.out",
+          },
+          "<"
+        ).to(".text5", {
+          opacity: 0,
+          x: "-100",
+          duration: 0.6,
+          delay: 0.6,
+          ease: "power1.out",
+        });
+        t4.from(
+          ".desc5",
+          {
+            opacity: 0,
+            x: "100",
+            duration: 1,
+            delay: 0.6,
+            ease: "power1.out",
+          },
+          "1"
+        ).to(".desc5", {
+          opacity: 0,
+          x: "-100",
+          duration: 0.6,
+          ease: "power1.out",
+        });
+
+        //section6
+        let t5 = gsap.timeline({
+          scrollTrigger: {
+            trigger: ".section6",
+            start: "top 10%",
+            endTrigger: ".section7",
+            pin: true,
+            markers: true,
+          },
+        });
+        t5.to(mesh.position, {
+          x: -1.1,
+          duration: 1.1,
+          ease: "power1.out",
+        });
+        t5.from(
+          ".text6",
+          {
+            opacity: 0,
+            x: "100",
+            duration: 1,
+            ease: "power1.out",
+          },
+          "<"
+        ).to(".text6", {
+          opacity: 0,
+          x: "-100",
+          duration: 0.6,
+          delay: 0.6,
+          ease: "power1.out",
+        });
+        t5.from(
+          ".desc6",
+          {
+            opacity: 0,
+            x: "100",
+            duration: 1,
+            delay: 0.6,
+            ease: "power1.out",
+          },
+          "1"
+        ).to(".desc6", {
+          opacity: 0,
+          x: "-100",
+          duration: 0.6,
+          ease: "power1.out",
+        });
+
+        //section 7
+        let t6 = gsap.timeline({
+          scrollTrigger: {
+            trigger: ".section7",
+            start: "top 10%",
+            endTrigger: ".section8",
+            pin: true,
+            markers: true,
+          },
+        });
+        t6.to(mesh.position, {
+          x: -0.1,
+          duration: 1.1,
+          ease: "power1.out",
+        });
+        t6.from(
+          ".text7",
+          {
+            opacity: 0,
+            x: "100",
+            duration: 1,
+            ease: "power1.out",
+          },
+          "<"
+        ).to(".text7", {
+          opacity: 0,
+          x: "-100",
+          duration: 0.6,
+          delay: 0.6,
+          ease: "power1.out",
+        });
+        t6.from(
+          ".desc7",
+          {
+            opacity: 0,
+            x: "100",
+            duration: 1,
+            delay: 0.6,
+            ease: "power1.out",
+          },
+          "1"
+        ).to(".desc7", {
+          opacity: 0,
+          x: "-100",
+          duration: 0.6,
+          ease: "power1.out",
+        });
+
+        //section 8
+        let t7 = gsap.timeline({
+          scrollTrigger: {
+            trigger: ".section8",
+            start: "top 10%",
+            pin: true,
+            markers: true,
+          },
+        });
+        t7.to(mesh.position, {
+          x: -0.1,
+          duration: 1.1,
+          ease: "power1.out",
+        });
+        t7.from(
+          ".text8",
+          {
+            opacity: 0,
+            x: "100",
+            duration: 1,
+            ease: "power1.out",
+          },
+          "<"
+        ).to(".text8", {
+          opacity: 0,
+          x: "-100",
+          duration: 0.6,
+          delay: 0.6,
+          ease: "power1.out",
+        });
+        t7.from(
+          ".desc8",
+          {
+            opacity: 0,
+            x: "100",
+            duration: 1,
+            delay: 0.6,
+            ease: "power1.out",
+          },
+          "1"
+        ).to(".desc8", {
+          opacity: 0,
+          x: "-100",
+          duration: 0.6,
+          ease: "power1.out",
+        });
+      });
+
+      window.addEventListener("resize", () => {
+        sizes.width = window.innerWidth;
+        sizes.height = window.innerHeight;
+
+        camera.aspect = sizes.width / sizes.height;
+        camera.updateProjectionMatrix();
+        renderer.setSize(sizes.width, sizes.height);
+      });
+      window.dispatchEvent(new Event("resize"));
+
+      function animateTexture() {
+        renderer.render(scene, camera); // Render the scene with updated texture offset
+        requestAnimationFrame(animateTexture);
+      }
+      animateTexture();
+    </script>
+  </body>
+</html>

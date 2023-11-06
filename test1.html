@@ -16,19 +16,59 @@
         margin: 0;
         padding: 0;
       }
-      /* .webgl {
+      .animation-container {
         width: 100%;
-        height: 100vh;
-        margin: 0;
-        padding: 0;
-        position: fixed;
+        height: 100%;
+      }
+      .logo-container {
+        position: absolute;
         top: 0;
         left: 0;
-        touch-action: none;
-      } */
-      canvas {
-        background-image: url("videos/GIF-1.gif");
-        background-size: cover;
+        width: 100%;
+        height: 100vh;
+        background-color: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1;
+      }
+      #logo {
+        width: 400px;
+        height: 380px;
+      }
+      .intro {
+        height: 100vh;
+        position: relative;
+      }
+      .intro video {
+        height: 100vh;
+      }
+      .intro h1 {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 80px;
+        color: white;
+      }
+      .preference {
+        background-image: url("images/road-scenery.jpg"); /* Replace 'your-image.jpg' with the path to your image */
+        background-size: cover; /* Adjust how the image is sized */
+        background-position: center center; /* Adjust the position of the image */
+        background-repeat: no-repeat; /* Prevent image from repeating */
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+        font-size: 80px;
+      }
+      .parallax-section {
+        background-attachment: fixed;
+        height: 100vh;
+        color: black;
       }
     </style>
     <script type="importmap">
@@ -43,103 +83,110 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   </head>
   <body>
-    <canvas class="webgl"></canvas>
+    <section class="animation-container">
+      <div class="logo-container">
+        <img src="/images/logo.jpg" alt="logo" id="logo" />
+      </div>
+      <div class="intro">
+        <h1>The New Bajaj Pulsar N160</h1>
+        <video
+          src="/videos/motorbikeCinematic.mp4"
+          preload="auto"
+          id="desktopVideo"
+        ></video>
+      </div>
+
+      <div class="parallex-section">
+        <div class="preference">
+          <button class="btn thrill">Thrill Seeker</button>
+          <button class="btn">City Ride</button>
+          <button class="btn">Road Ride</button>
+        </div>
+      </div>
+    </section>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/ScrollMagic.min.js"
+      integrity="sha256-2p2tRZlPowp3P/04Pw2rqVCSbhyV/IB7ZEVUglrDS/c="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/plugins/debug.addIndicators.js"
+      integrity="sha256-31FC/OT6XpfjAhj9FuXjw5/wPXXawCAjJQ29E23/XPk="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/plugins/animation.gsap.js"
+      integrity="sha256-peenofh8a9TIqKdPKIeQE7mJvuwh+J0To7nslvpj1jI="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"
+      integrity="sha256-lPE3wjN2a7ABWHbGz7+MKBJaykyzqCbU96BJWjio86U="
+      crossorigin="anonymous"
+    ></script>
+
     <script type="module">
-      import * as THREE from "three";
-      import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-      import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+      const intro = document.querySelector(".intro");
+      const video = intro.querySelector("video");
+      const text = intro.querySelector("h1");
+      //END SECTION
+      const section = document.querySelector("section");
+      const end = section.querySelector("h1");
 
-      const canvas = document.querySelector("canvas.webgl");
-      // Scene
-      const scene = new THREE.Scene();
-      // Camera
-      const sizes = {
-        width: window.innerWidth,
-        height: window.innerHeight,
-      };
-      const camera = new THREE.PerspectiveCamera(
-        45,
-        sizes.width / sizes.height,
-        0.1,
-        100
-      );
-      camera.position.set(0, 0, 10);
-      scene.add(camera);
+      const controller = new ScrollMagic.Controller();
 
-      // adding light in the scene
-      const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
-      scene.add(ambientLight);
+      //Scenes
+      let scene1 = new ScrollMagic.Scene({
+        duration: 20000,
+        triggerElement: intro,
+        triggerHook: 0,
+      })
+        .addIndicators()
+        .setPin(intro)
+        .addTo(controller);
 
-      const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-      directionalLight.position.set(1, 2, 0);
-      scene.add(directionalLight);
+      //Text Animation
+      const textAnim = TweenMax.fromTo(text, 1, { opacity: 1 }, { opacity: 0 });
 
-      // Renderer
-      const renderer = new THREE.WebGLRenderer({
-        canvas: canvas,
-        antialias: true,
-        alpha: true,
-      });
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.render(scene, camera);
+      let scene2 = new ScrollMagic.Scene({
+        duration: 3000,
+        triggerElement: intro,
+        triggerHook: 0,
+      })
+        .setTween(textAnim)
+        .addTo(controller);
 
-      //controls for model and camera movement
-      const controls = new OrbitControls(camera, renderer.domElement);
-      controls.enableRotate = false;
-      controls.enableZoom = false;
-      controls.minPolarAngle = Math.PI / 2;
-      controls.maxPolarAngle = Math.PI / 2;
+      //Video Animation
+      let accelamount = 0.1;
+      let scrollpos = 0;
+      let delay = 0;
+      // let animationFrameId = null;
 
-      // const textureLoader = new THREE.TextureLoader();
-      // const bgImg = textureLoader.load("videos/GIF-1.gif");
-      // bgImg.wrapS = THREE.RepeatWrapping;
-      // bgImg.wrapT = THREE.RepeatWrapping;
-      // bgImg.repeat.x = 0.113554;
-
-      // renderer.setClearColor(0x000000, 0);
-      // scene.background = bgImg;
-
-      let mesh = null;
-      const loader = new GLTFLoader().setPath("public/");
-      loader.load("Bike.glb", (gltf) => {
-        mesh = gltf.scene;
-        console.log(mesh);
-        //set the position of the model
-        mesh.position.set(-2.1, -2.9, 1.6);
-
-        //rotate the model horizontally
-        mesh.rotation.y = Math.PI / 2.1;
-
-        //mesh scale the model
-        mesh.scale.set(2.9, 2.9, 2.9);
-        scene.add(mesh);
+      scene1.on("update", (e) => {
+        scrollpos = e.scrollPos / 1000;
+        // updateVideoCurrentTime();
       });
 
-      window.addEventListener("resize", () => {
-        sizes.width = window.innerWidth;
-        sizes.height = window.innerHeight;
+      setInterval(() => {
+        delay += (scrollpos - delay) * accelamount;
+        // console.log(scrollpos, delay);
 
-        camera.aspect = sizes.width / sizes.height;
-        camera.updateProjectionMatrix();
-        renderer.setSize(sizes.width, sizes.height);
-      });
-
-      window.dispatchEvent(new Event("resize"));
-
-      // Render the scene
-      function animateTexture() {
-        // const speed = 0.00412; // Adjust the speed of the texture movement
-        // bgImg.offset.x += speed; // Update the texture offset in the x-direction
-
-        // // Reset texture offset when it reaches the end of the loop
-        // if (bgImg.offset.x > 1) {
-        //   bgImg.offset.x = 0;
-        // }
-
-        renderer.render(scene, camera); // Render the scene with updated texture offset
-        requestAnimationFrame(animateTexture);
+        video.currentTime = delay;
+      }, 33.3);
+      function changeBodyClass(newClass) {
+        document.body.className = newClass;
       }
-      animateTexture();
+
+      let scene3 = new ScrollMagic.Scene({
+        duration: "200%", // Adjust this value as needed for the desired parallax effect
+        triggerElement: section, // Change to your actual trigger element if needed
+        triggerHook: 1, // Adjust the triggerHook value as needed
+      })
+        .setTween(".preference", {
+          backgroundPosition: "50% 50%",
+          ease: Power0.easeNone,
+        }) // Adjust the values as needed for the desired effect
+        .addTo(controller);
     </script>
   </body>
 </html>

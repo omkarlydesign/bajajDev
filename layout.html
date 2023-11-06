@@ -108,8 +108,12 @@
         top: 0;
         left: 0;
         z-index: -1;
-        background-image: url("videos/GIF-1-MOBILE.gif");
+        /* background-image: url("videos/GIF-1-MOBILE.gif"); */
         background-size: cover;
+      }
+      .mode {
+        position: absolute;
+        bottom: 0px;
       }
       @media (max-width: 768px) {
         .btn {
@@ -302,9 +306,12 @@
       controls.maxPolarAngle = Math.PI / 2;
 
       let mesh = null;
+      let frontwheel;
       const loader = new GLTFLoader().setPath("public/");
-      loader.load("Bike.glb", (gltf) => {
+      loader.load("Bike_Animation.glb", (gltf) => {
         mesh = gltf.scene;
+        frontwheel = mesh.children[20];
+        console.log(frontwheel);
         //set the position of the model
         mesh.position.set(-4.1, -2.9, 1.6);
         //rotate the model horizontally
@@ -312,6 +319,36 @@
         //mesh scale the model
         mesh.scale.set(2.9, 2.9, 2.9);
         scene.add(mesh);
+
+        gsap.to(frontwheel, {
+          rotation: 360,
+        });
+
+        const thrillseeker = document.querySelector(".thrill-btn");
+        const urbanexplorer = document.querySelector(".urban-btn");
+        const roadrunner = document.querySelector(".roads-btn");
+
+        const backgroundanimation = document.querySelector(
+          ".background-animation"
+        );
+
+        thrillseeker.addEventListener("click", function () {
+          console.log("Thrill Seeker button clicked");
+          backgroundanimation.style.backgroundImage =
+            'url("videos/GIF-1-MOBILE.gif")';
+        });
+
+        urbanexplorer.addEventListener("click", function () {
+          console.log("Urban Explorer button clicked");
+          backgroundanimation.style.backgroundImage =
+            "url(videos/GIF-2-MOBILE.gif)";
+        });
+
+        roadrunner.addEventListener("click", function () {
+          console.log("Road Runner button clicked");
+          backgroundanimation.style.backgroundImage =
+            "url(videos/GIF-3-MOBILE.gif)";
+        });
 
         //intial animation
         document.addEventListener("click", function () {
@@ -707,6 +744,7 @@
 
       function animateTexture() {
         renderer.render(scene, camera); // Render the scene with updated texture offset
+
         requestAnimationFrame(animateTexture);
       }
       animateTexture();
